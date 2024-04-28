@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "screenshot-bot"
+version = "0.1.0"
+description = ""
+authors = ["samzong.lu <samzong.lu@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.110.2"
+uvicorn = "^0.29.0"
+apitable = "^1.4.2"
+selenium = "^4.20.0"
+selenium-screenshot = "^2.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
