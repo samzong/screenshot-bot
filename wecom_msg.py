@@ -31,8 +31,7 @@ def text_message(message: str):
     return {
         "msgtype": "text",
         "text": {
-            "content": message,
-            "mentioned_list": ["@all"],
+            "content": message
         }
     }
 

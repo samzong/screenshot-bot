@@ -51,44 +51,6 @@ def item_id(id: int):
     return f'#__next > div > div:nth-child(1) > div > div > div.Pane.vertical.Pane1 > div > div.style_shareMenu__C86Q_ > div.style_treeWrapper__vjF2w.undefined > div > div.ant-tree-list > div > div > div > div:nth-child({id})'
 
 
-def screenshot_cli():
-    setup_logging()
-    args = parse_arguments()
-
-    options = Options()
-    # options.headless = True
-    # options.add_argument("--headless")  # 指定使用无头模式
-    # options.add_argument("--disable-gpu")  # 禁用GPU加速，某些系统/驱动程序可能需要
-    options.add_argument("--window-size=1920x1080")  # 设置窗口大小，确保网页元素完全显示
-    options.add_argument("--no-sandbox")  # 以最高权限运行
-    options.add_argument("--disable-dev-shm-usage")  # 禁用/dev/shm使用，某些系统可能需要
-    options.add_argument("--disable-extensions")  # 禁用扩展
-    options.add_argument("--disable-infobars")  # 禁用信息栏
-
-    try:
-        driver = webdriver.Chrome(service=Service('/opt/homebrew/bin/chromedriver'), options=options)
-
-        # 下面是截图
-        driver.get(args.url)
-
-        # 等待页面的某个元素加载完成，确保异步内容加载
-        element = WebDriverWait(driver, 20).until(
-            # EC.presence_of_element_located((By.ID, 'DATASHEET_VIEW_CONTAINER_ID'))  # 替换为您需要等待加载的元素ID
-            EC.presence_of_element_located((By.ID, 'DASHBOARD_PANEL_ID'))  # 替换为您需要等待加载的元素ID
-        )
-
-        driver.fullscreen_window()
-
-        # wait 20 seconds for the page to load
-        driver.implicitly_wait(20)
-
-        driver.save_screenshot(args.screenshot)
-    except Exception as e:
-        logging.error(f'An error occurred: {e}')
-    finally:
-        driver.quit()
-
-
 def screenshot(url: str, screenshot_name: str):
     ob = Screenshot.Screenshot()
     setup_logging()
@@ -217,4 +179,4 @@ def screenshot(url: str, screenshot_name: str):
 
 
 if __name__ == '__main__':
-    screenshot(url='https://apitable.daocloud.io/share/shrdV0Mz1gT1YS8YLpt4N/fodMANB2v1v6d', screenshot_name='富国screenshot.png')
+    screenshot(url='https://apitable.daocloud.io/share/shrdV0Mz1gT1YS8YLpt4N/fodMANB2v1v6d', screenshot_name='富国_screenshot.png')

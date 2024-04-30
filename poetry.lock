@@ -249,6 +249,17 @@ files = [
 ]
 
 [[package]]
+name = "chinesecalendar"
+version = "1.9.1"
+description = "check if some day is holiday in China"
+optional = false
+python-versions = "*"
+files = [
+    {file = "chinesecalendar-1.9.1-py2.py3-none-any.whl", hash = "sha256:5e5565bd3da2eab3f5e0556efbe5b84d52ade42821e61328c6ae9c9568e702a5"},
+    {file = "chinesecalendar-1.9.1.tar.gz", hash = "sha256:90011bfe4ca30f331bab50754d7b0a04faf8ef72120694af978d0d6e7527ff95"},
+]
+
+[[package]]
 name = "click"
 version = "8.1.7"
 description = "Composable command line interface toolkit"
@@ -847,4 +858,4 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "4afc3f2491387cd6aa2e5d96f867a149073fc382680fae8434d1f7b8da290f22"
+content-hash = "5ecdbe9f8d6afb43fd84f133b27a893d05dc787df2840bff7fcc50ceaec5d6fd"
