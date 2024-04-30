@@ -10,6 +10,6 @@ docker run -d --platform linux/amd64 --name screenshot-bot \
   -e CHROMEDRIVER_PATH=/app/bin/chromedriver_linux_amd64 \
   -e API_TOKEN=usk4faMS1dP8Tsr6ytchczb \
   -e DST_ID_OR_URL=dstbVJRkmzWy1YbXuc \
-  screenshot-bot:v4
+  screenshot-bot:latest
 ```
 

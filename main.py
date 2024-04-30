@@ -1,8 +1,9 @@
 import time
 
 from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, FileResponse
 from auto_msg_and_image import handle_record
+from screenshot import screenshot_for_url
 import os
 import asyncio
 from apitable import Apitable
@@ -74,6 +75,15 @@ async def start_task(request: DatasheetRequest):
 @app.post("/datasheet_field", tags=["task"], summary="获取数据表字段", description="获取数据表字段")
 async def datasheet_field(request: DatasheetRequest):
     return gen_datasheet_field(datasheet_id=request.datasheet_id)
+
+
+@app.get("/test-screenshot", tags=["test"], summary="测试截图功能", description="提供任意一个链接测试截图功能是否正常")
+async def test_sreenshot():
+    try:
+        if screenshot_for_url(url="https://www.baidu.com", screenshot_name="baidu.png"):
+            return FileResponse("baidu.png", media_type="image/png")
+    except Exception as e:
+        return f'An error occurred: {e}, 截图失败！'
 
 
 @app.get("/")

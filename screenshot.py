@@ -13,9 +13,7 @@ E-mail: samzong.lu@gmail.com
 
 import time
 import os
-
 import argparse
-import logging
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -26,10 +24,6 @@ from selenium.common.exceptions import TimeoutException
 from Screenshot import Screenshot
 
 chromedrvier_path = os.getenv("CHROMEDRIVER_PATH")
-
-
-def setup_logging():
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 def parse_arguments():
@@ -53,7 +47,6 @@ def item_id(id: int):
 
 def screenshot(url: str, screenshot_name: str):
     ob = Screenshot.Screenshot()
-    setup_logging()
     options = Options()
     options.add_argument("--headless")  # 指定使用无头模式
     options.add_argument("--disable-gpu")  # 禁用GPU加速，某些系统/驱动程序可能需要
@@ -92,8 +85,6 @@ def screenshot(url: str, screenshot_name: str):
         driver.find_element(By.CSS_SELECTOR, fullscreen_id()).click()
         driver.save_screenshot('1_' + screenshot_name)
 
-        logging.debug('Screenshot 01 done')
-
         # 菜单 02
         time.sleep(10)
         # 展开/折叠侧边栏
@@ -111,8 +102,6 @@ def screenshot(url: str, screenshot_name: str):
         driver.find_element(By.CSS_SELECTOR, sidecar_id()).click()
         driver.find_element(By.CSS_SELECTOR, fullscreen_id()).click()
         driver.save_screenshot('2_' + screenshot_name)
-
-        logging.debug('Screenshot 03 done')
 
         # 菜单 03
         time.sleep(1)
@@ -164,8 +153,6 @@ def screenshot(url: str, screenshot_name: str):
         with open('3_' + screenshot_name, 'wb') as f:
             f.write(bytes_content)
 
-        logging.debug('Screenshot 03 done')
-
         return [
             '1_' + screenshot_name,
             '2_' + screenshot_name,
@@ -173,10 +160,36 @@ def screenshot(url: str, screenshot_name: str):
         ]
 
     except Exception as e:
-        logging.error(f'An error occurred: {e}')
+        print(f'An error occurred: {e}')
+    finally:
+        driver.quit()
+
+
+def screenshot_for_url(url: str, screenshot_name: str = 'screenshot.png'):
+    options = Options()
+    options.add_argument("--headless")  # 指定使用无头模式
+    options.add_argument("--disable-gpu")  # 禁用GPU加速，某些系统/驱动程序可能需要
+    options.add_argument("--window-size=1920x1440")  # 设置窗口大小，确保网页元素完全显示
+    options.add_argument("--no-sandbox")  # 以最高权限运行
+    options.add_argument("--disable-dev-shm-usage")  # 禁用/dev/shm使用，某些系统可能需要
+    options.add_argument("--disable-extensions")  # 禁用扩展
+    options.add_argument("--disable-infobars")  # 禁用信息栏
+
+    try:
+        driver = webdriver.Chrome(service=Service(chromedrvier_path), options=options)
+
+        # 下面是截图
+        driver.get(url)
+        driver.fullscreen_window()
+        driver.save_screenshot(screenshot_name)
+        return "screenshot success!"
+
+    except Exception as e:
+        print(f'An error occurred: {e}')
+        return "screenshot failed!"
     finally:
         driver.quit()
 
 
 if __name__ == '__main__':
-    screenshot(url='https://apitable.daocloud.io/share/shrdV0Mz1gT1YS8YLpt4N/fodMANB2v1v6d', screenshot_name='富国_screenshot.png')
+    screenshot_for_url(url='https://www.baidu.com', screenshot_name='screenshot.png')
