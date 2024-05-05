@@ -63,5 +63,5 @@ if __name__ == '__main__':
         msy_type="image",
         message="测试消息",
         webhook="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=3fd6fa58-b5ac-41b6-8f7e-0e0c26931d65",
-        image_file="3_富国screenshot.png"
+        image_file="3_富国 screenshot.png"
     )

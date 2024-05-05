@@ -29,12 +29,18 @@ def compress_image(infile, mb=2):
         print("图片过大，进入压缩流程", png_size)
         try:
             outfile = os.path.splitext(infile)[0] + ".jpg"
+            quality = 50
+
             while True:
                 im = Image.open(infile)
                 im = im.convert("RGB")
-                im.save(outfile, format="JPEG", quality=40)
+                im.save(outfile, format="JPEG", quality=quality)
 
                 if os.path.getsize(outfile) < (mb - 0.1) * 1024 * 1024:
+                    break
+                quality -= 10  # Reduce quality by 10 each time
+                if quality < 0:  # Ensure quality doesn't go below 0
+                    print("Unable to compress the image to the desired size.")
                     break
 
                 infile = outfile
@@ -48,4 +54,4 @@ def compress_image(infile, mb=2):
 
 if __name__ == '__main__':
     # 使用示例
-    compress_image('2_富国screenshot.png', mb=2)
+    compress_image('2_富国 screenshot.png', mb=2)

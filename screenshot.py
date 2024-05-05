@@ -8,8 +8,6 @@ Author: samzong.lu
 E-mail: samzong.lu@gmail.com
 
 """
-# /usr/bin/env python3
-# -*- coding: UTF-8 -*-
 
 import time
 import os
@@ -29,7 +27,8 @@ chromedrvier_path = os.getenv("CHROMEDRIVER_PATH")
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('--url', help='The URL to open', required=True)
-    parser.add_argument('--screenshot', help='The file name for the screenshot', default='screenshot.png')
+    parser.add_argument(
+        '--screenshot', help='The file name for the screenshot', default='screenshot.png')
     return parser.parse_args()
 
 
@@ -49,15 +48,16 @@ def screenshot(url: str, screenshot_name: str):
     ob = Screenshot.Screenshot()
     options = Options()
     options.add_argument("--headless")  # 指定使用无头模式
-    options.add_argument("--disable-gpu")  # 禁用GPU加速，某些系统/驱动程序可能需要
+    options.add_argument("--disable-gpu")  # 禁用 GPU 加速，某些系统/驱动程序可能需要
     options.add_argument("--window-size=1920x1440")  # 设置窗口大小，确保网页元素完全显示
     options.add_argument("--no-sandbox")  # 以最高权限运行
-    options.add_argument("--disable-dev-shm-usage")  # 禁用/dev/shm使用，某些系统可能需要
+    options.add_argument("--disable-dev-shm-usage")  # 禁用/dev/shm 使用，某些系统可能需要
     options.add_argument("--disable-extensions")  # 禁用扩展
     options.add_argument("--disable-infobars")  # 禁用信息栏
 
     try:
-        driver = webdriver.Chrome(service=Service(chromedrvier_path), options=options)
+        driver = webdriver.Chrome(service=Service(
+            chromedrvier_path), options=options)
 
         # 下面是截图
         driver.get(url)
@@ -67,7 +67,8 @@ def screenshot(url: str, screenshot_name: str):
         WebDriverWait(driver, 20).until(
             # EC.presence_of_element_located((By.ID, 'DATASHEET_VIEW_CONTAINER_ID'))  # 数据表
             # EC.presence_of_element_located((By.ID, 'DASHBOARD_PANEL_ID'))  # 仪表盘
-            EC.presence_of_element_located((By.ID, 'FOLDER_SHOWCASE_NODES_CONTAINER'))  # 文件夹
+            EC.presence_of_element_located(
+                (By.ID, 'FOLDER_SHOWCASE_NODES_CONTAINER'))  # 文件夹
         )
 
         # 菜单 01
@@ -76,7 +77,8 @@ def screenshot(url: str, screenshot_name: str):
 
         # 等待某个元素加载完成，确保异步内容加载
         WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.ID, 'DASHBOARD_PANEL_ID'))  # 替换为您需要等待加载的元素ID
+            EC.presence_of_element_located(
+                (By.ID, 'DASHBOARD_PANEL_ID'))  # 替换为您需要等待加载的元素 ID
         )
 
         time.sleep(10)
@@ -94,7 +96,8 @@ def screenshot(url: str, screenshot_name: str):
 
         # 等待某个元素加载完成，确保异步内容加载
         WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.ID, 'DASHBOARD_PANEL_ID'))  # 替换为您需要等待加载的元素ID
+            EC.presence_of_element_located(
+                (By.ID, 'DASHBOARD_PANEL_ID'))  # 替换为您需要等待加载的元素 ID
         )
 
         time.sleep(10)
@@ -111,9 +114,11 @@ def screenshot(url: str, screenshot_name: str):
 
         while True:
             try:
-                driver.find_element(By.CSS_SELECTOR, item_id(4)).click()  # 点击目标菜单
+                driver.find_element(
+                    By.CSS_SELECTOR, item_id(4)).click()  # 点击目标菜单
                 WebDriverWait(driver, 20).until(
-                    EC.presence_of_element_located((By.ID, 'DATASHEET_VIEW_CONTAINER_ID'))  # 替换为您需要等待加载的元素ID
+                    EC.presence_of_element_located(
+                        (By.ID, 'DATASHEET_VIEW_CONTAINER_ID'))  # 替换为您需要等待加载的元素 ID
                 )
                 time.sleep(5)
                 break
@@ -128,7 +133,8 @@ def screenshot(url: str, screenshot_name: str):
 
         k = 1
         while True:
-            if k * 1080 < height and k * 1080 < 5000:
+            # 滚动到底部，但是不超过 3241
+            if k * 1080 < height and k * 1080 < 3241:
                 js_move = f"window.scrollTo(0,{k * 1080})"
                 driver.execute_script(js_move)
                 time.sleep(0.5)
@@ -143,6 +149,7 @@ def screenshot(url: str, screenshot_name: str):
         var heightStyle = window.getComputedStyle(element).getPropertyValue('height');
         return parseFloat(heightStyle);
         """
+
         height = driver.execute_script(total_height)
         driver.set_window_size(1920, height)
 
@@ -168,15 +175,16 @@ def screenshot(url: str, screenshot_name: str):
 def screenshot_for_url(url: str, screenshot_name: str = 'screenshot.png'):
     options = Options()
     options.add_argument("--headless")  # 指定使用无头模式
-    options.add_argument("--disable-gpu")  # 禁用GPU加速，某些系统/驱动程序可能需要
+    options.add_argument("--disable-gpu")  # 禁用 GPU 加速，某些系统/驱动程序可能需要
     options.add_argument("--window-size=1920x1440")  # 设置窗口大小，确保网页元素完全显示
     options.add_argument("--no-sandbox")  # 以最高权限运行
-    options.add_argument("--disable-dev-shm-usage")  # 禁用/dev/shm使用，某些系统可能需要
+    options.add_argument("--disable-dev-shm-usage")  # 禁用/dev/shm 使用，某些系统可能需要
     options.add_argument("--disable-extensions")  # 禁用扩展
     options.add_argument("--disable-infobars")  # 禁用信息栏
 
     try:
-        driver = webdriver.Chrome(service=Service(chromedrvier_path), options=options)
+        driver = webdriver.Chrome(service=Service(
+            chromedrvier_path), options=options)
 
         # 下面是截图
         driver.get(url)
@@ -192,4 +200,5 @@ def screenshot_for_url(url: str, screenshot_name: str = 'screenshot.png'):
 
 
 if __name__ == '__main__':
-    screenshot_for_url(url='https://www.baidu.com', screenshot_name='screenshot.png')
+    screenshot_for_url(url='https://www.baidu.com',
+                       screenshot_name='screenshot.png')

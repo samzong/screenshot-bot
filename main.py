@@ -1,5 +1,3 @@
-import time
-
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse, FileResponse
 from auto_msg_and_image import handle_record
@@ -32,7 +30,9 @@ async def task(datasheet_id: str):
     # 打印需要执行的项目
     print([(record.fldjtSK5iPPJ6, record.fld4yMzYbuxq0) for record in records])
 
-    send_message(msy_type="text", message="日报任务发送开始！", webhook="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=eab79c07-e732-4d93-b5c9-842a1051f890")
+    # 通知产品群，周报任务开始了
+    send_message(msy_type="text", message="日报任务发送开始！",
+                 webhook="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=eab79c07-e732-4d93-b5c9-842a1051f890")
 
     # 循环执行每个记录
     try:
@@ -44,17 +44,13 @@ async def task(datasheet_id: str):
         if lock.locked():  # 只有在锁被获取的情况下才尝试释放锁
             lock.release()
 
-        send_message(msy_type="text", message="日报任务发送完成！", webhook="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=eab79c07-e732-4d93-b5c9-842a1051f890")
+        send_message(msy_type="text", message="日报任务发送完成！",
+                     webhook="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=eab79c07-e732-4d93-b5c9-842a1051f890")
 
 
 def gen_datasheet_field(datasheet_id: str):
     datasheet = apitable.datasheet(dst_id_or_url=datasheet_id, field_key="id")
-    fields = datasheet.fields.all()
-
-    for field in fields:
-        print(field.json())
-
-    return fields
+    return datasheet.fields.all()
 
 
 @app.post("/start_task", tags=["task"], summary="启动任务", description="启动周报统计任务")
