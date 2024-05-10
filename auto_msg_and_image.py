@@ -20,13 +20,14 @@ fldB5J4474Pyl 消息内容
 
 """
 
-import time
 import logging
+import time
 from datetime import datetime
+
 from chinese_calendar import is_workday
 
-from wecom_msg import send_message
 from screenshot import screenshot
+from wecom_msg import send_message
 
 # 今天星期几
 today_of_weekday = datetime.now().weekday()
@@ -42,6 +43,11 @@ def handle_record(record):
     if not is_china_workday:
         print(datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ", 今天是不是法定工作日")
         return datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ", 今天是不是法定工作日"
+
+    print(record.fldjtSK5iPPJ6, ", 发送频次: ", record.fld4yMzYbuxq0)
+
+    if record.fld4yMzYbuxq0 != "每日":
+        return True
 
     if record.fldJqbySNwota and record.fldwoUisE6688 and record.fldB5J4474Pyl:
         print(datetime.now().strftime(
