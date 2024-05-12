@@ -38,48 +38,55 @@ today_of_month = datetime.now().day
 is_china_workday = is_workday(datetime.now())
 
 
+def _handle_trigger(project_name: str, wecom_bot_url: str, share_folder_url: str, wecom_message: str):
+    try:
+        print(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), ">>> 项目处理开始", project_name)
+
+        # 执行截图动作
+        snapshot = screenshot(url=share_folder_url, screenshot_name=project_name + ".png")
+
+        # 发送开始消息
+        send_message(msy_type="text", message=wecom_message, webhook=wecom_bot_url)
+
+        # 发送图片消息
+        if snapshot and len(snapshot) > 0:
+            for image in snapshot:
+                send_message(msy_type="image", message=wecom_message, webhook=wecom_bot_url, image_file=image)
+
+        # 发送结束提示语
+        send_message(
+            msy_type="text", message=f"报告由助手自动发送，详情查看 {share_folder_url}； 若有疑问，在群里联系负责产品经理。", webhook=wecom_bot_url)
+
+    except Exception as e:
+        logging.error(f'An error occurred: {e}')
+
+    finally:
+        print(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), "<<< 项目处理结束", project_name)
+        time.sleep(10)  # 休息10秒
+
+
 def handle_record(record):
-    # 判断今天是否为工作日
+    _current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    # 初始化参数
+    project_name = record.json()['fldjtSK5iPPJ6']  # 客户名称
+    wecom_bot_url = record.json()['fldJqbySNwota']  # 群机器人链接
+    share_folder_url = record.json()['fldwoUisE6688']  # 分享文件夹链接
+    wecom_message = record.json()['fldB5J4474Pyl']  # 消息内容
+    send_frequency = record.json()['fld4yMzYbuxq0']  # 发送频次
+
+    # 判断是否有必要字段, 字段缺失，不执行发送计划
+    if not all([wecom_bot_url, share_folder_url, wecom_message, send_frequency]):
+        return _current_time + ", 项目信息不完整"
+
+    # 判断今天是否为工作日，非工作日，不执行发送计划
     if not is_china_workday:
-        print(datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ", 今天是不是法定工作日")
-        return datetime.now().strftime('%Y-%m-%d %H:%M:%S') + ", 今天是不是法定工作日"
+        return _current_time + ", 今天不是法定工作日"
 
-    print(record.fldjtSK5iPPJ6, ", 发送频次: ", record.fld4yMzYbuxq0)
+    # 周一发送，如果不是周一不发送
+    if send_frequency == "每周" and today_of_weekday == 0:
+        _handle_trigger(project_name, wecom_bot_url, share_folder_url, wecom_message)
 
-    if record.fld4yMzYbuxq0 != "每日":
-        return True
-
-    if record.fldJqbySNwota and record.fldwoUisE6688 and record.fldB5J4474Pyl:
-        print(datetime.now().strftime(
-            '%Y-%m-%d %H:%M:%S'), "数据内容：", record.json())
-
-        project_name = record.json()['fldjtSK5iPPJ6']  # 客户名称
-        wecom_bot_url = record.json()['fldJqbySNwota']  # 群机器人链接
-        share_folder_url = record.json()['fldwoUisE6688']  # 分享文件夹链接
-        wecom_message = record.json()['fldB5J4474Pyl']  # 消息内容
-
-        try:
-            # 截图
-            snapshot = screenshot(
-                url=share_folder_url, screenshot_name=project_name + "_screenshot.png")
-
-            # 发送消息
-            send_message(msy_type="text", message=wecom_message,
-                         webhook=wecom_bot_url)
-            if snapshot and len(snapshot) > 0:
-                for image in snapshot:
-                    send_message(msy_type="image", message=wecom_message,
-                                 webhook=wecom_bot_url, image_file=image)
-            # 发送机器人提醒
-            send_message(
-                msy_type="text", message=f"本周报由产品助手机器人发送，详情请查看 {share_folder_url}, 若数据有疑问，请在群里联系负责产品经理。", webhook=wecom_bot_url)
-        except Exception as e:
-            logging.error(f'An error occurred: {e}')
-        finally:
-            print(datetime.now().strftime(
-                '%Y-%m-%d %H:%M:%S'), "项目发送结束", record.json())
-            time.sleep(10)
-
-
-if __name__ == '__main__':
-    pass
+    # 发送每日报告
+    if send_frequency == "每日":
+        _handle_trigger(project_name, wecom_bot_url, share_folder_url, wecom_message)
