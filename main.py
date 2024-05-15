@@ -36,7 +36,11 @@ def clean_cache_image():
 async def task(datasheet_id: str, is_test: bool = False):
     # 获取数据表中的所有记录
     datasheet = apitable.datasheet(dst_id_or_url=datasheet_id, field_key="id")
-    records = datasheet.records.all()
+    try:
+        records = datasheet.records.all()
+    except Exception as e:
+        print(f'An error occurred in datasheet.records.all(): {e}')
+        return {"message": "获取数据表记录失败，确认是否可以访问 Apitable 数据表！"}
 
     # 通知产品群，周报任务开始了
     if is_test:
