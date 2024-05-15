@@ -10,8 +10,8 @@ docker buildx build --load  --platform linux/amd64 -t screenshot-bot:v3  .
 docker run -d --platform linux/amd64 --name screenshot-bot \
   -e CHROMEDRIVER_PATH=/app/bin/chromedriver_linux_amd64 \
   -e API_TOKEN=usk4faMS1dP8Tsr6ytchczb \
-  -e DST_ID_OR_URL=dstbVJRkmzWy1YbXuc \
-  screenshot-bot:latest
+  -p 8001:8000 \
+  release.daocloud.io/ndx-product/screenshot-bot:latest
 ```
 
 目前需要关注的是项目需要chrome的依赖，这里使用了 `selenium/standalone-chrome` 镜像，在构建的时候指定平台为 `linux/amd64`。
@@ -59,10 +59,22 @@ curl -X 'POST' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-  "datasheet_id": "dstrqpMc5uCrC8lWge"
+  "datasheet_id": "dstrqpMc5uCrC8lWge",
+  "is_test": true
 }'
 ```
 
 ### 运行条件要求
 
 需要在公司内网的服务器，或者连到 vpn， 依赖 apitbale。
+
+### chromedriver 和 Chrome 的关系
+
+项目依赖 chromedriver 和 Chrome，并且需要两者的版本搭配；
+
+1. 先去 [chromedriver 官网](https://chromedriver.chromium.org/downloads) 下载 chromedriver，注意下载的版本号
+2. 然后，去 [Chrome](https://chrome-versions.com/)，下载对应版本的 Chrome，注意版本号匹配
+3. 下载时注意选择对应的操作系统，比如 Mac、Linux、Windows 和 arm64、amd64 的区别
+4. 在 [bin](./bin) 目录下，预置了 Mac M1 和 Linux 的 chromedriver，你可以直接使用，如果不是这两个系统，你需要自己下载并替换
+5. Dockerfile 内预置下载了 Chrome 下载，与 bin 目录下的 chromedriver 版本是匹配的
+
