@@ -21,6 +21,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+from logger import get_logger
+
+logger = get_logger(__name__)
 chromedrvier_path = os.getenv("CHROMEDRIVER_PATH")
 
 def sidecar_id():
@@ -158,7 +161,7 @@ def screenshot(url: str, screenshot_name: str):
         ]
 
     except Exception as e:
-        print(f'An error occurred: {e}')
+        logger.error(f'An error occurred: {e}')
     finally:
         driver.quit()
 
@@ -184,7 +187,7 @@ def screenshot_for_url(url: str, screenshot_name: str = 'screenshot.png'):
         return "screenshot success!"
 
     except Exception as e:
-        print(f'An error occurred: {e}')
+        logger.error(f'An error occurred: {e}')
         return "screenshot failed!"
     finally:
         driver.quit()

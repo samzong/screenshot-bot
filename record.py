@@ -24,8 +24,11 @@ from datetime import datetime
 
 from chinese_calendar import is_workday
 
+from logger import get_logger
 from screenshot import screenshot
 from wecom import (send_message)
+
+logger = get_logger(__name__)
 
 # 今天星期几
 today_of_weekday = datetime.now().weekday()
@@ -66,11 +69,11 @@ def handle_record(record):
     record_json = record.json()
 
     if not all(field in record_json for field in fields):
-        print(_current_time + ", 项目信息不完整")
+        logger.warning(_current_time + ", 项目信息不完整")
         return _current_time + ", 项目信息不完整"
 
     if not all(record_json.get(field) for field in fields):
-        print(_current_time + ", 存在字段值为空")
+        logger.warning(_current_time + ", 存在字段值为空")
         return _current_time + ", 存在字段值为空"
 
     # 初始化参数
@@ -82,7 +85,7 @@ def handle_record(record):
 
     # 判断今天是否为工作日，非工作日，不执行发送计划
     if not is_china_workday:
-        print(_current_time + ", 今天不是法定工作日")
+        logger.warning(_current_time + ", 今天不是法定工作日")
         return _current_time + ", 今天不是法定工作日"
 
     # 周一发送，如果不是周一不发送

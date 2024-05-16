@@ -4,3 +4,5 @@ __pycache__
 *.png
 *.jpg
 test-env.sh
+app.log
+*.log
