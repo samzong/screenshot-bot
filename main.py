@@ -7,9 +7,9 @@ from fastapi import FastAPI
 from fastapi.responses import RedirectResponse, FileResponse
 from pydantic import BaseModel
 
-from auto_msg_and_image import handle_record
+from record import handle_record
 from screenshot import screenshot_for_url
-from wecom_msg import send_message
+from wecom import send_message
 
 app = FastAPI()
 

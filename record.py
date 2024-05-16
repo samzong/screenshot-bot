@@ -27,7 +27,7 @@ from datetime import datetime
 from chinese_calendar import is_workday
 
 from screenshot import screenshot
-from wecom_msg import send_message
+from wecom import (send_message)
 
 # 今天星期几
 today_of_weekday = datetime.now().weekday()

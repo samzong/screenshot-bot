@@ -9,8 +9,9 @@ E-mail: samzong.lu@gmail.com
 
 """
 
-from PIL import Image
 import os
+
+from PIL import Image
 
 
 def compress_image(infile, mb=2):

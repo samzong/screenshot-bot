@@ -8,9 +8,11 @@ Author: samzong.lu
 E-mail: samzong.lu@gmail.com
 
 """
-import requests
-import hashlib
 import base64
+import hashlib
+
+import requests
+
 from compress import compress_image
 
 
