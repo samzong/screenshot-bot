@@ -24,7 +24,7 @@ lock = asyncio.Lock()
 
 API_TOKEN = os.getenv("API_TOKEN")
 apitable = Apitable(api_base="https://apitable.daocloud.io", token=API_TOKEN)
-product_webhook = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=eab79c07-e732-4d93-b5c9-842a1051f890"
+product_webhook = os.getenv("WECOM_PROD_WEBHOOK")
 
 
 def clean_cache_image():
