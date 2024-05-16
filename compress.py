@@ -51,8 +51,3 @@ def compress_image(infile, mb=2):
         except Exception as e:
             print(e)
             return outfile
-
-
-if __name__ == '__main__':
-    # 使用示例
-    compress_image('2_富国 screenshot.png', mb=2)

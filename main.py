@@ -23,7 +23,8 @@ class DatasheetRequest(BaseModel):
 lock = asyncio.Lock()
 
 API_TOKEN = os.getenv("API_TOKEN")
-apitable = Apitable(api_base="https://apitable.daocloud.io", token=API_TOKEN)
+API_BASE = os.getenv("APITABLE_BASE_URL")
+apitable = Apitable(api_base=API_BASE, token=API_TOKEN)
 product_webhook = os.getenv("WECOM_PROD_WEBHOOK")
 
 

@@ -9,7 +9,6 @@ E-mail: samzong.lu@gmail.com
 
 """
 
-import argparse
 import os
 import time
 
@@ -23,15 +22,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 chromedrvier_path = os.getenv("CHROMEDRIVER_PATH")
-
-
-def parse_arguments():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--url', help='The URL to open', required=True)
-    parser.add_argument(
-        '--screenshot', help='The file name for the screenshot', default='screenshot.png')
-    return parser.parse_args()
-
 
 def sidecar_id():
     return '#__next > div > div:nth-child(1) > div > div > div.Pane.vertical.Pane1 > div > div.style_closeBtn__rWKqG'
@@ -199,7 +189,3 @@ def screenshot_for_url(url: str, screenshot_name: str = 'screenshot.png'):
     finally:
         driver.quit()
 
-
-if __name__ == '__main__':
-    screenshot_for_url(url='https://www.baidu.com',
-                       screenshot_name='screenshot.png')

@@ -7,8 +7,6 @@
 Author: samzong.lu
 E-mail: samzong.lu@gmail.com
 
-https://apitable.daocloud.io/workbench/dstrqpMc5uCrC8lWge
-
 fldjtSK5iPPJ6 客户名称
 fldJAgnhUjLNf 关联项目
 flduoxSXPabw6 项目所属区域
