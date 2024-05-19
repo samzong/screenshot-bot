@@ -52,9 +52,9 @@ async def task(datasheet_id: str, is_test: bool = False):
     # 循环执行每个记录
     try:
         for record in records:
-            logger.info(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), " >>> ", record.json()['fldjtSK5iPPJ6'], "发送开始")
+            logger.info('%s >>> %s 发送开始', datetime.now().strftime('%Y-%m-%d %H:%M:%S'), record.json()['fldjtSK5iPPJ6'])
             handle_record(record)
-            logger.info(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), " <<< ", record.json()['fldjtSK5iPPJ6'], "发送完成")
+            logger.info('%s <<< %s 发送完成', datetime.now().strftime('%Y-%m-%d %H:%M:%S'), record.json()['fldjtSK5iPPJ6'])
         if is_test:
             send_message(msy_type="text", message="日报任务发送完成！", webhook=product_webhook)
 
