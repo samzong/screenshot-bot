@@ -50,17 +50,23 @@ def _handle_trigger(project_name: str, wecom_bot_url: str, share_folder_url: str
         # 发送图片消息
         if snapshot and len(snapshot) > 0:
             for image in snapshot:
-                send_message(msy_type="image", message=wecom_message, webhook=wecom_bot_url, image_file=image)
+                send_message(msy_type="image",
+                             message=wecom_message,
+                             webhook=wecom_bot_url,
+                             image_file=image)
 
         # 发送结束提示语
         send_message(
-            msy_type="text", message=f"报告由助手自动发送，详情查看 {share_folder_url}； 若有疑问，在群里联系负责产品经理。", webhook=wecom_bot_url)
+            msy_type="text",
+            message=f"报告由助手自动发送，详情查看 {share_folder_url}； 若有疑问，在群里联系负责产品经理。",
+            webhook=wecom_bot_url)
 
     except Exception as e:
         logging.error(f'An error occurred in send_message: {e}')
 
     finally:
-        time.sleep(10)  # 休息10秒
+        # 休息10秒
+        time.sleep(10)
 
 
 def handle_record(record):

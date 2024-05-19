@@ -78,3 +78,14 @@ curl -X 'POST' \
 4. 在 [bin](./bin) 目录下，预置了 Mac M1 和 Linux 的 chromedriver，你可以直接使用，如果不是这两个系统，你需要自己下载并替换
 5. Dockerfile 内预置下载了 Chrome 下载，与 bin 目录下的 chromedriver 版本是匹配的
 
+
+## 运行时间
+
+```bash
+0 21 * * 1-5 curl -X POST 'http://127.0.0.1:8001/start_task' -H 'Content-Type: application/json' --data-raw '{"datasheet_id": "dstrqpMc5uCrC8lWge", "is_test": true}'
+```
+
+
+```bash
+curl -X POST 'http://127.0.0.1:8000/start_task' -H 'Content-Type: application/json' -d '{"datasheet_id": "dstrqpMc5uCrC8lWge", "is_test": true}'
+```
