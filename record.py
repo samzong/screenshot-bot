@@ -95,7 +95,7 @@ def handle_record(record):
         return _current_time + ", 今天不是法定工作日"
 
     # 周一发送，如果不是周一不发送
-    if send_frequency == "每周一次" and today_of_weekday == 0:
+    if send_frequency == "每周一次" and today_of_weekday == 4:
         _handle_trigger(project_name, wecom_bot_url, share_folder_url, wecom_message)
         return _current_time + ", 每周发送，今天是周一，发送成功"
 

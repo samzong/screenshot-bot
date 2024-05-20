@@ -47,7 +47,8 @@ async def task(datasheet_id: str, is_test: bool = False):
 
     # 通知产品群，周报任务开始了
     if is_test:
-        send_message(msy_type="text", message="日报任务发送开始！", webhook=product_webhook)
+        # send_message(msy_type="text", message="日报任务发送开始！", webhook=product_webhook)
+        pass
 
     # 循环执行每个记录
     try:
