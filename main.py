@@ -4,13 +4,13 @@ from datetime import datetime
 
 import uvicorn
 from apitable import Apitable
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse, FileResponse
 from pydantic import BaseModel
 
 from logger import get_logger
 from record import handle_record
-from screenshot import screenshot_for_url
+from screenshot import screenshot_for_url, screenshot
 from wecom import send_message
 
 app = FastAPI()
@@ -20,6 +20,10 @@ class DatasheetRequest(BaseModel):
     datasheet_id: str
     is_test: bool = False
 
+
+# Define a response model using Pydantic
+class ScreenshotResponse(BaseModel):
+    message: str
 
 # 创建一个锁来管理任务状态
 lock = asyncio.Lock()
@@ -47,8 +51,8 @@ async def task(datasheet_id: str, is_test: bool = False):
 
     # 通知产品群，周报任务开始了
     if is_test:
-        # send_message(msy_type="text", message="日报任务发送开始！", webhook=product_webhook)
-        pass
+        send_message(msy_type="text", message="日报任务发送开始！", webhook=product_webhook)
+        # pass
 
     # 循环执行每个记录
     try:
@@ -98,6 +102,22 @@ async def test_sreenshot():
     except Exception as e:
         logger.error(f'An error occurred in test_screenshot: {e}')
         return f'An error occurred in screenshot_for_url: {e}, 截图失败！'
+
+
+@app.get("/clean-cache-image", tags=["test"], summary="清理缓存图片", description="清理缓存图片")
+async def clean_cache():
+    clean_cache_image()
+    return {"message": "缓存图片已清理"}
+
+
+@app.post("/test-record", tags=["test"], summary="测试接口", description="测试接口", response_model=ScreenshotResponse)
+async def test_record(folder_url: str, folder_name: str) -> ScreenshotResponse:
+    try:
+        screenshot(url=folder_url, screenshot_name=folder_name + ".png")
+        return ScreenshotResponse(message="Screenshot success!")
+    except Exception as e:
+        logger.error(f'An error occurred in test_record: {e}')
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/")

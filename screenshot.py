@@ -29,10 +29,9 @@ chromedrvier_path = os.getenv("CHROMEDRIVER_PATH")
 def sidecar_id():
     return '#__next > div > div:nth-child(1) > div > div > div.Pane.vertical.Pane1 > div > div.style_closeBtn__rWKqG'
 
-
 def fullscreen_id():
-    return '#DASHBOARD_PANEL_ID > div.style_dashboardPanel__r3e0U > div.style_tabBar__RrS9Q > div.style_tabRight__91w_0 > button.sc-GhhNo.gpGkBP.style_atcButton__H4qwy'
-
+    return '#DASHBOARD_PANEL_ID > div.style_dashboardPanel__r3e0U > div.style_tabBar__RrS9Q > div.style_tabRight__91w_0 > button.sc-GhhNo.gpGkBP.style_atcButton__H4qwy' # old apitable
+    # return '#DASHBOARD_PANEL_ID > div.style_dashboardPanel__r3e0U > div.style_tabBar__RrS9Q > div.style_tabRight__91w_0 > button.sc-jrcTuL.iGlphV.style_atcButton__H4qwy'  # new vikadata
 
 def item_id(id: int):
     return f'#__next > div > div:nth-child(1) > div > div > div.Pane.vertical.Pane1 > div > div.style_shareMenu__C86Q_ > div.style_treeWrapper__vjF2w.undefined > div > div.ant-tree-list > div > div > div > div:nth-child({id})'
