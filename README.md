@@ -10,6 +10,8 @@ docker buildx build --load  --platform linux/amd64 -t screenshot-bot:v3  .
 docker run -d --platform linux/amd64 --name screenshot-bot \
   -e CHROMEDRIVER_PATH=/app/bin/chromedriver_linux_amd64 \
   -e API_TOKEN=usk4faMS1dP8Tsr6ytchczb \
+  -e APITABLE_BASE_URL="https://apitable.daocloud.io" \
+  -e WECOM_PROD_WEBHOOK="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=eab79c07-e732-4d93-b5c9-842a1051f890" \
   -p 8001:8000 \
   release.daocloud.io/ndx-product/screenshot-bot:latest
 ```
